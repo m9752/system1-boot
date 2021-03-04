@@ -5,7 +5,7 @@
     - `bootstrap4` 기반 UI 적용
     - free-jqgrid 사용
 
-### 관련 오픈소스
+### 사용한 기능
 - carbon : Bootstrap 4 Admin Template
     - <https://github.com/seguce92/carbon>
 - chart.js : Open source HTML5 Charts
