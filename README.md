@@ -18,6 +18,7 @@
 ### TODO
 - maven -> gradle 변경
 - jsp -> thymeleaf 변경
+- Oracle DB -> postgreSQL 변경
 - 불필요한 설정 내용 삭제
 - 로그인 처리 로직 추가
     - 입력 5회 틀렸을 경우 처리, 패스워드 복잡도 등
