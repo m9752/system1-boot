@@ -1,0 +1,66 @@
+
+# 외부 tomcat에서 사용할 수 없는 것 같음. 방법 찾을때까지 properties 사용
+
+#spring:
+#  profiles:
+#    active: local  
+#
+#  main:
+#    allow-bean-definition-overriding: true
+#
+#  mvc:
+#    view: 
+#      prefix: /WEB-INF/views/
+#      suffix: .jsp
+#
+##spring.datasource.driverClassName=oracle.jdbc.driver.OracleDriver
+##spring.datasource.url=jdbc:oracle:thin:@127.0.0.1:49161:xe
+##spring.datasource.driverClassName=net.sf.log4jdbc.sql.jdbcapi.DriverSpy
+##spring.datasource.url=jdbc:log4jdbc:oracle:thin:@127.0.0.1:49161:xe
+##spring.datasource.username=test
+##spring.datasource.password=test135
+#
+#  datasource:
+#    driverClassName: 8V8964RccQQpJM+93VZfQx3GxO8bevmVShfTED3CWubcrs7x0haunEs5o9h8u81c
+#    url: 9rADMLQ44dScd7HZ8crKfKcwOAzVt9ObrFTA7FVROXRL0xKjx9MmPAWWkgpEQd+s
+#    username: uUBVHWlKlpx5DjRkG3VgsQ==
+#    password: JgrP9f5GBHlaWIcINOOr7A==
+#    
+#server:
+#  port: 8081
+#
+#file:
+#  maxUploadSize: 10485760
+#
+#key:
+#  file:
+#    path: D:/project/s1-secure/k.md
+#    
+#---
+#
+#spring:
+#  profiles: prod  
+#
+#  main:
+#    allow-bean-definition-overriding: true
+#
+#  mvc:
+#    view: 
+#      prefix: /WEB-INF/views/
+#      suffix: .jsp
+#
+#  datasource:
+#    driverClassName: 8V8964RccQQpJM+93VZfQx3GxO8bevmVShfTED3CWubcrs7x0haunEs5o9h8u81c
+#    url: 9rADMLQ44dScd7HZ8crKfI9SgdboFcJlg9EgUv+HTuOh+9aYCCVhF9KLQoMitLhi
+#    username: uUBVHWlKlpx5DjRkG3VgsQ==
+#    password: JgrP9f5GBHlaWIcINOOr7A==
+#    
+#server:
+#  port: 8080
+#
+#file:
+#  maxUploadSize: 10485760
+#
+#key:
+#  file:
+#    path: /usr/local/secure/k.md

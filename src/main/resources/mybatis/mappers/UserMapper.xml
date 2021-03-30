@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="net.tmpspace.p1.framework.model.user.UserMapper">
+	
+	<resultMap type="net.tmpspace.p1.framework.model.user.UserVO" id="userModel">
+        
+        <id property="userid" column="userid" javaType="String" />
+        <result property="email" column="email" javaType="String" />
+        <result property="password" column="password" javaType="String" />
+        <result property="nickname" column="nickname" javaType="String" />
+        <result property="comments" column="comments" javaType="String" />
+        <collection property="roles" column="role" javaType="List" ofType="String">
+            <result column="role" />
+        </collection> 
+    </resultMap>
+	
+	<select id="userSelect" resultMap="userModel" parameterType="String">
+        select a.userid, a.email, a.password, a.nickname, a.comments, b.role
+          from tb_users a, tb_roles b
+         where a.userid = b.userid
+           and a.userid = #{userid}
+    </select>
+	
+</mapper>

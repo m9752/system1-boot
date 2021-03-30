@@ -1,0 +1,308 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="net.tmpspace.p1.pmd.web.model.PmdMapper">
+	
+	<resultMap id="PmdResultMap" type="PmdResultVO">
+        <result property="yymm" column="YYMM" />
+        <result property="ver" column="VER" />
+        <result property="teamCd" column="TEAM_CD" />
+        <result property="teamNm" column="TEAM_NM" />
+        <result property="grpNm" column="GRP_NM" />        
+        <result property="systemNm" column="SYSTEM_NM" />
+        <result property="b2cYn" column="B2C_YN" />
+        <result property="pNo" column="P_NO" />
+        <result property="packageNm" column="PACKAGE_NM" />
+        <result property="fileNm" column="FILE_NM" />
+        <result property="priority" column="PRIORITY" />
+        <result property="priorityNm" column="PRIORITY_NM" />
+        <result property="lineNo" column="LINE_NO" />
+        <result property="rulesetNm" column="RULESET_NM" />
+        <result property="ruleNm" column="RULE_NM" />
+        <result property="pmdCount" column="PMD_CNT" />
+    </resultMap>
+    
+    <resultMap id="PmdChartMap" type="PmdChartVO">
+        <result property="teamCd" column="TEAM_CD" />
+        <result property="teamNm" column="TEAM_NM" />
+        <result property="grpNm" column="GRP_NM" />        
+        <result property="systemNm" column="SYSTEM_NM" />
+        <result property="b2cYn" column="B2C_YN" />
+        <result property="packageNm" column="PACKAGE_NM" />
+        <result property="priority" column="PRIORITY" />
+        <result property="ruleNm" column="RULE_NM" />
+        <result property="highCount" column="HIGH_COUNT" />
+        <result property="mhCount" column="MH_COUNT" />
+        <result property="mmCount" column="MM_COUNT" />
+        <result property="mlCount" column="ML_COUNT" />
+        <result property="lowCount" column="LOW_COUNT" />
+        <result property="blockerCount" column="BLOCKER_COUNT" />
+        <result property="criticalCount" column="CRITICAL_COUNT" />
+        <result property="urgentCount" column="URGENT_COUNT" />
+        <result property="totalCount" column="TOTAL_COUNT" />
+        <result property="trendCount1" column="TREND_COUNT_1" />
+        <result property="trendCount2" column="TREND_COUNT_2" />
+        <result property="trendCount3" column="TREND_COUNT_3" />
+        <result property="trendCount4" column="TREND_COUNT_4" />
+        <result property="trendCount5" column="TREND_COUNT_5" />
+        <result property="trendCount6" column="TREND_COUNT_6" />
+    </resultMap>
+    
+    <resultMap id="PmdRuleMap" type="PmdRuleVO">
+        <result property="ruleNo" column="RULE_NO" />
+        <result property="ruleRef" column="RULE_REF" />
+        <result property="ruleLang" column="RULE_LANG" />
+        <result property="ruleCategory" column="RULE_CATEGORY" />
+        <result property="ruleNm" column="RULE_NM" />
+        <result property="prodYn" column="PROD_YN" />
+        <result property="depreYn" column="DEPRE_YN" />
+        <result property="sinceVer" column="SINCE_VER" />
+        <result property="priority" column="PRIORITY" />
+        <result property="priorityNm" column="PRIORITY_NM" />
+        <result property="message" column="MESSAGE" />
+        <result property="detailDesc" column="DETAIL_DESC" />
+        <result property="badCase" column="BAD_CASE" />
+        <result property="goodCase" column="GOOD_CASE" />        
+    </resultMap>
+	
+	<select id="selectPmdRaw" parameterType="PmdResultVO" resultMap="PmdResultMap">
+		SELECT A.RNUM, A.YYMM, A.VER, 
+		       A.TEAM_CD, 
+		       (SELECT Z.COMN_CD_NM FROM TB_COMNCD Z WHERE Z.DIV_CD = 'CC01' AND Z.COMN_CD = A.TEAM_CD) TEAM_NM, 
+		       A.GRP_NM, A.SYSTEM_NM, A.B2C_YN, 
+               A.PRIORITY, 
+               (SELECT Z.COMN_CD_NM FROM TB_COMNCD Z WHERE Z.DIV_CD = 'PC01' AND Z.COMN_CD = A.PRIORITY) PRIORITY_NM, 
+               A.PACKAGE_NM, A.LINE_NO, A.RULE_NM
+          FROM (
+                SELECT ROWNUM RNUM, YYMM, VER, TEAM_CD, GRP_NM, SYSTEM_NM, B2C_YN, 
+                       PRIORITY, PACKAGE_NM, LINE_NO, RULE_NM
+                  FROM (
+                        SELECT YYMM, VER, TEAM_CD, GRP_NM, SYSTEM_NM, B2C_YN, 
+                               PRIORITY, PACKAGE_NM, LINE_NO, RULE_NM
+                          FROM TB_BASEDATA
+                         WHERE 1 = 1
+                           AND YYMM = #{yymm}
+				           AND VER = #{ver}
+				           <if test= "teamCd != '' and teamCd != null ">
+				           AND TEAM_CD = #{teamCd}
+				           </if>
+				           <if test= "grpNm != '' and grpNm != null ">
+				           AND GRP_NM LIKE '%' || #{grpNm} || '%'
+				           </if>
+				           <if test= "systemNm != '' and systemNm != null ">
+				           AND SYSTEM_NM LIKE '%' || #{systemNm} || '%'
+				           </if>
+				           <if test= "b2cYn != '' and b2cYn != null ">
+				           AND B2C_YN = #{b2cYn}
+				           </if>
+				           <if test= "priority != '' and priority != null ">
+				           AND PRIORITY = #{priority}
+				           </if>
+				           <if test= "ruleNm != '' and ruleNm != null ">
+				           AND RULE_NM LIKE '%' || #{ruleNm} || '%'
+				           </if>
+                         ORDER BY YYMM, VER, TEAM_CD, GRP_NM, SYSTEM_NM, B2C_YN, 
+                                  PRIORITY, PACKAGE_NM, LINE_NO, RULE_NM
+                       )
+                 WHERE 1 = 1
+                   AND ROWNUM <![CDATA[ <= ]]> #{endNum}
+               ) A
+         WHERE A.RNUM <![CDATA[ >= ]]> #{startNum}
+	</select>
+	
+	<select id="selectPmdRawTotal" parameterType="PmdResultVO" resultType="Integer">
+        SELECT COUNT(*) PMD_CNT
+          FROM TB_BASEDATA
+         WHERE 1 = 1
+           AND YYMM = #{yymm}
+           AND VER = #{ver}
+           <if test= "teamCd != '' and teamCd != null ">
+           AND TEAM_CD = #{teamCd}
+           </if>
+           <if test= "grpNm != '' and grpNm != null ">
+           AND GRP_NM LIKE '%' || #{grpNm} || '%'
+           </if>
+           <if test= "systemNm != '' and systemNm != null ">
+           AND SYSTEM_NM LIKE '%' || #{systemNm} || '%'
+           </if>
+           <if test= "b2cYn != '' and b2cYn != null ">
+           AND B2C_YN = #{b2cYn}
+           </if>
+           <if test= "priority != '' and priority != null ">
+           AND PRIORITY = #{priority}
+           </if>
+           <if test= "ruleNm != '' and ruleNm != null ">
+           AND RULE_NM LIKE '%' || #{ruleNm} || '%'
+           </if>
+    </select>
+	
+	<select id="selectPmdChart1" parameterType="PmdResultVO" resultMap="PmdChartMap">
+ 
+	   SELECT TEAM_CD,
+	          (SELECT Z.COMN_CD_NM FROM TB_COMNCD Z WHERE Z.DIV_CD = 'CC01' AND Z.COMN_CD = A.TEAM_CD) TEAM_NM,
+              SUM(CASE WHEN PRIORITY = 'PC101' THEN PMD_CNT ELSE 0 END) BLOCKER_COUNT,
+              SUM(CASE WHEN PRIORITY = 'PC102' THEN PMD_CNT ELSE 0 END) CRITICAL_COUNT,
+              SUM(CASE WHEN PRIORITY = 'PC103' THEN PMD_CNT ELSE 0 END) URGENT_COUNT,
+              SUM(PMD_CNT) TOTAL_COUNT
+         FROM TB_CHARTDATA A
+        WHERE 0=0 
+          AND YYMM = #{yymm}
+          AND VER = #{ver}
+          <if test= "teamCd != '' and teamCd != null ">
+          AND TEAM_CD = #{teamCd}
+          </if>
+        GROUP BY TEAM_CD
+        ORDER BY SUM(PMD_CNT) DESC, TEAM_CD
+                  
+    </select>
+	
+	<select id="selectPmdChart2" parameterType="PmdResultVO" resultMap="PmdChartMap">
+	
+	    SELECT TEAM_CD,
+	           (SELECT Z.COMN_CD_NM FROM TB_COMNCD Z WHERE Z.DIV_CD = 'CC01' AND Z.COMN_CD = A.TEAM_CD) TEAM_NM,  
+	           SYSTEM_NM,
+		       SUM(CASE WHEN PRIORITY = 'PC101' THEN PMD_CNT ELSE 0 END) BLOCKER_COUNT,
+               SUM(CASE WHEN PRIORITY = 'PC102' THEN PMD_CNT ELSE 0 END) CRITICAL_COUNT,
+               SUM(CASE WHEN PRIORITY = 'PC103' THEN PMD_CNT ELSE 0 END) URGENT_COUNT,
+		       SUM(PMD_CNT) TOTAL_COUNT
+		  FROM TB_CHARTDATA A
+		 WHERE YYMM = #{yymm}
+           AND VER = #{ver}
+		   <if test= "teamCd != '' and teamCd != null ">
+           AND TEAM_CD = #{teamCd}
+           </if>
+           <if test= "systemNm != '' and systemNm != null ">
+           AND SYSTEM_NM LIKE '%' || #{systemNm} || '%'
+           </if>
+           <if test= "b2cYn != '' and b2cYn != null ">
+           AND B2C_YN = #{b2cYn}
+           </if>
+           <if test= "priority != '' and priority != null ">
+           AND PRIORITY = #{priority}
+           </if>
+           <if test= "ruleNm != '' and ruleNm != null ">
+           AND RULE_NM LIKE '%' || #{ruleNm} || '%'
+           </if>
+		 GROUP BY TEAM_CD, SYSTEM_NM
+		 ORDER BY TOTAL_COUNT DESC, TEAM_CD, SYSTEM_NM
+	
+	</select>
+	
+	<select id="selectPmdChart3" parameterType="PmdResultVO" resultMap="PmdChartMap">
+    
+        SELECT /* (SELECT Z.COMN_CD_NM FROM TB_COMNCD Z WHERE Z.DIV_CD = 'CC01' AND Z.COMN_CD = A.TEAM_CD) TEAM_NM, */ 
+               /* SYSTEM_NM, */
+               RULE_NM,
+               SUM(PMD_CNT) TOTAL_COUNT
+          FROM TB_CHARTDATA A
+         WHERE YYMM = #{yymm}
+           AND VER = #{ver}
+           <if test= "teamCd != '' and teamCd != null ">
+           AND TEAM_CD = #{teamCd}
+           </if>
+           <if test= "systemNm != '' and systemNm != null ">
+           AND SYSTEM_NM LIKE '%' || #{systemNm} || '%'
+           </if>
+           <if test= "b2cYn != '' and b2cYn != null ">
+           AND B2C_YN = #{b2cYn}
+           </if>
+           <if test= "priority != '' and priority != null ">
+           AND PRIORITY = #{priority}
+           </if>
+           <if test= "ruleNm != '' and ruleNm != null ">
+           AND RULE_NM LIKE '%' || #{ruleNm} || '%'
+           </if>
+         GROUP BY RULE_NM --TEAM_CD, SYSTEM_NM, RULE_NM
+         ORDER BY TOTAL_COUNT DESC, RULE_NM --TEAM_CD, SYSTEM_NM, RULE_NM
+    
+    </select>
+    
+    <select id="selectPmdTrendChart1" parameterType="PmdResultVO" resultMap="PmdChartMap">
+    
+        SELECT A.TEAM_CD,
+		       (SELECT Z.COMN_CD_NM FROM TB_COMNCD Z WHERE Z.DIV_CD = 'CC01' AND Z.COMN_CD = A.TEAM_CD) TEAM_NM,
+		       SUM(CASE WHEN A.YYMM = TO_CHAR(ADD_MONTHS(TO_DATE(#{yymm}, 'YYYYMM'), -5), 'YYYYMM') THEN PMD_CNT ELSE 0 END) TREND_COUNT_1,
+		       SUM(CASE WHEN A.YYMM = TO_CHAR(ADD_MONTHS(TO_DATE(#{yymm}, 'YYYYMM'), -4), 'YYYYMM') THEN PMD_CNT ELSE 0 END) TREND_COUNT_2,
+		       SUM(CASE WHEN A.YYMM = TO_CHAR(ADD_MONTHS(TO_DATE(#{yymm}, 'YYYYMM'), -3), 'YYYYMM') THEN PMD_CNT ELSE 0 END) TREND_COUNT_3,
+		       SUM(CASE WHEN A.YYMM = TO_CHAR(ADD_MONTHS(TO_DATE(#{yymm}, 'YYYYMM'), -2), 'YYYYMM') THEN PMD_CNT ELSE 0 END) TREND_COUNT_4,
+		       SUM(CASE WHEN A.YYMM = TO_CHAR(ADD_MONTHS(TO_DATE(#{yymm}, 'YYYYMM'), -1), 'YYYYMM') THEN PMD_CNT ELSE 0 END) TREND_COUNT_5,
+		       SUM(CASE WHEN A.YYMM = #{yymm} THEN PMD_CNT ELSE 0 END) TREND_COUNT_6
+		  FROM TB_CHARTDATA A
+		 WHERE 0=0
+		   AND A.PRIORITY IN ('PC101', 'PC102', 'PC103')
+		   AND A.YYMM BETWEEN TO_CHAR(ADD_MONTHS(TO_DATE(#{yymm}, 'YYYYMM'), -5), 'YYYYMM') AND #{yymm}
+		 GROUP BY A.TEAM_CD
+		 ORDER BY A.TEAM_CD
+		 
+    </select>
+    
+    <select id="selectPmdRule" parameterType="PmdRuleVO" resultMap="PmdRuleMap">
+    
+        SELECT RULE_NO, RULE_REF, RULE_LANG, RULE_CATEGORY, RULE_NM, PROD_YN, DEPRE_YN,
+               SINCE_VER, PRIORITY, PRIORITY_NM, MESSAGE, DETAIL_DESC, BAD_CASE, GOOD_CASE
+          FROM (
+                SELECT ROWNUM RNUM, RULE_NO, RULE_REF, RULE_LANG, RULE_CATEGORY, RULE_NM, PROD_YN, DEPRE_YN,
+                       SINCE_VER, PRIORITY, PRIORITY_NM, MESSAGE, DETAIL_DESC, BAD_CASE, GOOD_CASE
+                  FROM (
+                        SELECT RULE_NO, RULE_REF, RULE_LANG, RULE_CATEGORY, RULE_NM, PROD_YN, DEPRE_YN,
+                               SINCE_VER, PRIORITY, PRIORITY || ' - ' || PRIORITY_NM PRIORITY_NM, 
+                               MESSAGE, DETAIL_DESC, BAD_CASE, GOOD_CASE
+                          FROM TB_PMDRULE
+                         WHERE 0=0
+                         <if test= "ruleLang != '' and ruleLang != null ">
+                           AND RULE_LANG = #{ruleLang}
+                         </if>
+                         <if test= "ruleCategory != '' and ruleCategory != null ">
+                           AND RULE_CATEGORY = #{ruleCategory}
+                         </if>
+                         <if test= "prodYn != '' and prodYn != null ">
+                           AND PROD_YN = #{prodYn}
+                         </if>
+                         <if test= "ruleLang != '' and ruleLang != null ">
+                           AND RULE_LANG = #{ruleLang}
+                         </if>
+                         <if test= "priority != '' and priority != null ">
+				           AND PRIORITY = #{priority}
+				         </if>
+				         <if test= "ruleNm != '' and ruleNm != null ">
+				           AND RULE_NM LIKE '%' || #{ruleNm} || '%'
+				         </if>
+                         ORDER BY RULE_NO
+                       )
+                 WHERE 0=0
+                   AND ROWNUM <![CDATA[ <= ]]> #{endNum}
+               )
+         WHERE 0=0
+           AND RNUM <![CDATA[ >= ]]> #{startNum}
+    
+    </select>
+    
+    <select id="selectPmdRuleTotal" parameterType="PmdRuleVO" resultType="Integer">
+    
+        SELECT COUNT(*)
+          FROM TB_PMDRULE
+         WHERE 0=0
+         <if test= "ruleLang != '' and ruleLang != null ">
+           AND RULE_LANG = #{ruleLang}
+         </if>
+         <if test= "ruleCategory != '' and ruleCategory != null ">
+           AND RULE_CATEGORY = #{ruleCategory}
+         </if>
+         <if test= "prodYn != '' and prodYn != null ">
+           AND PROD_YN = #{prodYn}
+         </if>
+         <if test= "ruleLang != '' and ruleLang != null ">
+           AND RULE_LANG = #{ruleLang}
+         </if>
+         <if test= "priority != '' and priority != null ">
+           AND PRIORITY = #{priority}
+         </if>
+         <if test= "ruleNm != '' and ruleNm != null ">
+           AND RULE_NM LIKE '%' || #{ruleNm} || '%'
+         </if>
+    
+    </select>
+	
+</mapper>  

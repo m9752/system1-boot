@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<typeAliases>
+		<typeAlias type="net.tmpspace.p1.framework.model.user.UserVO" alias="UserVO" />
+		<typeAlias type="net.tmpspace.p1.framework.web.common.model.ComnCdVO" alias="ComnCdVO" />
+		
+		<typeAlias type="net.tmpspace.p1.pmd.web.model.PmdResultVO" alias="PmdResultVO" />
+		<typeAlias type="net.tmpspace.p1.pmd.web.model.PmdChartVO" alias="PmdChartVO" />
+		<typeAlias type="net.tmpspace.p1.pmd.web.model.PmdRuleVO" alias="PmdRuleVO" />
+		
+	</typeAliases>
+</configuration>
+

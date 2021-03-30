@@ -1,0 +1,20 @@
+version: "3.1"
+
+services:
+  web:
+    image: 'm9752/system1:1.0'
+    #restart: always
+    container_name: system1-hub
+    ports:
+      - '19081:8080'
+    # 필요에 따라 디렉토리 설정할 것
+    #volumes:
+      #- '/home/test/docker/system1/conf:/usr/local/tomcat/conf'
+      #- '/home/test/docker/system1/logs:/usr/local/tomcat/logs'
+      #- '/home/test/docker/system1/webapps:/usr/local/tomcat/webapps'
+      #- '/home/test/docker/system1/secure:/usr/local/secure'
+
+networks:
+  default:
+    external:
+      name: nw1

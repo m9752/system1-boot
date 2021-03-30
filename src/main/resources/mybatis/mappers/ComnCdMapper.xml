@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="net.tmpspace.p1.framework.web.common.model.ComnCdMapper">
+	
+	<resultMap id="ComnCdMap" type="ComnCdVO">
+        <result property="comnCd" column="COMN_CD" />
+        <result property="comnCdNm" column="COMN_CD_NM" />
+        <result property="comnCdVal" column="COMN_CD_VAL" />
+    </resultMap>
+		
+	<select id="selectComboCode" parameterType="ComnCdVO" resultMap="ComnCdMap">    
+        SELECT COMN_CD, COMN_CD_VAL, COMN_CD_NM
+		  FROM TB_COMNCD
+		 WHERE DIV_CD = #{divCd}
+		 ORDER BY COMN_CD                  
+    </select>
+    
+    <select id="selectDataVer" parameterType="ComnCdVO" resultMap="ComnCdMap">    
+        SELECT YYMM || '-' || VER COMN_CD,
+		       YYMM || '-' || VER COMN_CD_NM
+		  FROM TB_VER
+		 GROUP BY YYMM, VER
+		 ORDER BY YYMM || VER DESC                 
+    </select>
+    
+    <select id="selectPmdComboCode" parameterType="ComnCdVO" resultMap="ComnCdMap">    
+        SELECT ${columnName} AS COMN_CD
+          FROM TB_PMDRULE
+         GROUP BY ${columnName}
+         ORDER BY ${columnName}                 
+    </select>
+	
+</mapper>  
