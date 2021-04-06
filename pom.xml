@@ -241,11 +241,21 @@
         </dependency>
         
         <!-- https://mvnrepository.com/artifact/com.oracle.database.jdbc/ojdbc6 -->
+		<!-- 
 		<dependency>
 		    <groupId>com.oracle.database.jdbc</groupId>
 		    <artifactId>ojdbc6</artifactId>
 		    <version>11.2.0.4</version>
 		</dependency>
+		-->
+		
+		<!-- https://mvnrepository.com/artifact/org.postgresql/postgresql -->
+		<dependency>
+		    <groupId>org.postgresql</groupId>
+		    <artifactId>postgresql</artifactId>
+		    <version>42.2.19</version>
+		</dependency>
+
         
 		<dependency>
 		    <groupId>org.apache.tomcat</groupId>

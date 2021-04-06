@@ -32,6 +32,7 @@
     </logger>
     
     <!-- 3rdparty Loggers -->
+    <!-- 
     <logger name="org.springframework.core" level="DEBUG" additivity="false">
     </logger>
     
@@ -43,9 +44,10 @@
 
     <logger name="org.springframework.web" level="DEBUG" additivity="false">
     </logger>
+    -->
     
     <!-- SQL -->
-    <logger name="java.sql" level="ERROR"/>
+    <!-- <logger name="java.sql" level="ERROR"/> -->
     
     <!-- SQL만 출력 -->
     <logger name="jdbc.sqlonly" level="DEBUG"/>

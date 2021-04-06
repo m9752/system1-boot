@@ -76,7 +76,7 @@
                (SELECT Z.COMN_CD_NM FROM TB_COMNCD Z WHERE Z.DIV_CD = 'PC01' AND Z.COMN_CD = A.PRIORITY) PRIORITY_NM, 
                A.PACKAGE_NM, A.LINE_NO, A.RULE_NM
           FROM (
-                SELECT ROWNUM RNUM, YYMM, VER, TEAM_CD, GRP_NM, SYSTEM_NM, B2C_YN, 
+                SELECT (ROW_NUMBER() OVER()) AS RNUM, YYMM, VER, TEAM_CD, GRP_NM, SYSTEM_NM, B2C_YN, 
                        PRIORITY, PACKAGE_NM, LINE_NO, RULE_NM
                   FROM (
                         SELECT YYMM, VER, TEAM_CD, GRP_NM, SYSTEM_NM, B2C_YN, 
@@ -105,9 +105,8 @@
 				           </if>
                          ORDER BY YYMM, VER, TEAM_CD, GRP_NM, SYSTEM_NM, B2C_YN, 
                                   PRIORITY, PACKAGE_NM, LINE_NO, RULE_NM
-                       )
-                 WHERE 1 = 1
-                   AND ROWNUM <![CDATA[ <= ]]> #{endNum}
+                       ) AS tmp
+                 LIMIT #{endNum}
                ) A
          WHERE A.RNUM <![CDATA[ >= ]]> #{startNum}
 	</select>
@@ -243,7 +242,7 @@
         SELECT RULE_NO, RULE_REF, RULE_LANG, RULE_CATEGORY, RULE_NM, PROD_YN, DEPRE_YN,
                SINCE_VER, PRIORITY, PRIORITY_NM, MESSAGE, DETAIL_DESC, BAD_CASE, GOOD_CASE
           FROM (
-                SELECT ROWNUM RNUM, RULE_NO, RULE_REF, RULE_LANG, RULE_CATEGORY, RULE_NM, PROD_YN, DEPRE_YN,
+                SELECT (ROW_NUMBER() OVER()) AS RNUM, RULE_NO, RULE_REF, RULE_LANG, RULE_CATEGORY, RULE_NM, PROD_YN, DEPRE_YN,
                        SINCE_VER, PRIORITY, PRIORITY_NM, MESSAGE, DETAIL_DESC, BAD_CASE, GOOD_CASE
                   FROM (
                         SELECT RULE_NO, RULE_REF, RULE_LANG, RULE_CATEGORY, RULE_NM, PROD_YN, DEPRE_YN,
@@ -270,10 +269,9 @@
 				           AND RULE_NM LIKE '%' || #{ruleNm} || '%'
 				         </if>
                          ORDER BY RULE_NO
-                       )
-                 WHERE 0=0
-                   AND ROWNUM <![CDATA[ <= ]]> #{endNum}
-               )
+                       ) AS tmp
+                 LIMIT #{endNum}
+               ) AS tmp2
          WHERE 0=0
            AND RNUM <![CDATA[ >= ]]> #{startNum}
     

@@ -32,6 +32,7 @@
     </logger>
     
     <!-- 3rdparty Loggers -->
+    <!-- 
     <logger name="org.springframework.core" level="INFO" additivity="false">
     </logger>
     
@@ -43,6 +44,7 @@
 
     <logger name="org.springframework.web" level="INFO" additivity="false">
     </logger>
+    -->
     
     <!-- SQL -->
     <logger name="java.sql" level="ERROR"/>

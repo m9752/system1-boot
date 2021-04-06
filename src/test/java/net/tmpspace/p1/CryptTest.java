@@ -45,7 +45,9 @@ public class CryptTest {
 		cryptionUtil.setCryptionKey(key);		
 		targetString.add("net.sf.log4jdbc.sql.jdbcapi.DriverSpy");
 		//targetString.add("jdbc:log4jdbc:oracle:thin:@127.0.0.1:1521:xe");
-		targetString.add("jdbc:log4jdbc:oracle:thin:@ora11g:1521:xe");
+		//targetString.add("jdbc:log4jdbc:oracle:thin:@ora11g:1521:xe");
+		targetString.add("jdbc:log4jdbc:postgresql://localhost:5432/postgres");
+		targetString.add("jdbc:log4jdbc:postgresql://postgres-hub:5432/postgres");
 		targetString.add("test");
 		targetString.add("test135");
 		
